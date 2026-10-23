@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Django
+backend/db.sqlite3
+backend/staticfiles/
+backend/media/
+backend/ai/artifacts/*.joblib
+backend/ai/artifacts/metrics.json
+*.log
+
+# Node
+node_modules/
+dist/
+.vite/
+frontend/coverage/
+
+# ML outputs (regenerate with python ml/train.py)
+ml/data/tickets.jsonl
+
+# Env & IDE
+.env
+.env.local
+.vscode/
+.idea/
+.DS_Store
+
+# Test / type caches
+.pytest_cache/
+.ruff_cache/
+.tsbuildinfo
+coverage/

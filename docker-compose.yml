@@ -1,0 +1,62 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: smartdesk
+      POSTGRES_USER: smartdesk
+      POSTGRES_PASSWORD: smartdesk
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U smartdesk -d smartdesk"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    ports:
+      - "5432:5432"
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      DJANGO_DEBUG: "true"
+      DJANGO_SECRET_KEY: docker-dev-secret-change-me
+      DJANGO_ALLOWED_HOSTS: "*"
+      POSTGRES_DB: smartdesk
+      POSTGRES_USER: smartdesk
+      POSTGRES_PASSWORD: smartdesk
+      POSTGRES_HOST: db
+      POSTGRES_PORT: "5432"
+      CORS_ALLOWED_ORIGINS: http://localhost:5173,http://127.0.0.1:5173
+      ML_ARTIFACTS_DIR: /app/ai/artifacts
+    volumes:
+      - media:/app/media
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "uv run python manage.py migrate --noinput &&
+             uv run python manage.py train_models --notes 'docker build run' &&
+             uv run python manage.py seed_demo --tickets 45 &&
+             uv run python manage.py runserver 0.0.0.0:8000"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    environment:
+      VITE_API_TARGET: http://backend:8000
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/index.html:/app/index.html
+
+volumes:
+  pgdata:
+  media:
