@@ -103,6 +103,24 @@ These numbers are **optimistic** — training data is template-generated. See *L
 - `manage.py train_models` records a `ModelRun` for the monitoring page
 - `manage.py seed_demo` provisions teams, users, SLA policies and 45 AI-triaged demo tickets
 
+## Screenshots
+
+| Dashboard | Kanban board |
+| :---: | :---: |
+| ![Dashboard](docs/screenshots/02-dashboard.png) | ![Kanban board](docs/screenshots/03-kanban-board.png) |
+
+| Ticket detail — AI triage panel | New ticket — live AI preview |
+| :---: | :---: |
+| ![Ticket detail with AI triage panel](docs/screenshots/05-ticket-detail-ai-panel.png) | ![Live AI preview while typing](docs/screenshots/07-new-ticket-live-ai-preview.png) |
+
+| Model monitoring | Dark mode |
+| :---: | :---: |
+| ![Model monitoring](docs/screenshots/09-model-monitoring.png) | ![Dashboard in dark mode](docs/screenshots/11-dashboard-dark-mode.png) |
+
+Also captured: login, ticket list with filters, the human-in-the-loop correction modal, the
+operations analytics view and the confusion-matrix report — all in
+[`docs/screenshots/`](docs/screenshots/).
+
 ## Quick start (local, no Docker)
 
 ```bash
